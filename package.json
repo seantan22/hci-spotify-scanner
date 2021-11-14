@@ -1,0 +1,23 @@
+{
+  "name": "hci-spotify-scanner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seantan22/hci-spotify-scanner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seantan22/hci-spotify-scanner/issues"
+  },
+  "homepage": "https://github.com/seantan22/hci-spotify-scanner#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
