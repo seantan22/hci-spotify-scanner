@@ -5,6 +5,7 @@ import media from '../styles/media'
 import theme from '../styles/theme';
 
 import Playlists from './Playlists';
+import Scan from './Scan';
 
 const SiteWrapper = styled.div`
   padding-left: ${theme.navWidth};
@@ -20,6 +21,7 @@ export default class Overview extends Component {
         <SiteWrapper>
           <Router primary={false}>
           <Playlists path="/" />
+          <Scan path="/scan/:playlistId" />
         </Router>
         </SiteWrapper>
       )

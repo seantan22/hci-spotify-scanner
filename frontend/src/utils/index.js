@@ -13,9 +13,15 @@ export const getHashParams = () => {
 
 // Error Handling
 export const catchErrors = fn => {
-    return function(...args) {
-      return fn(...args).catch(err => {
-        console.error(err);
-      });
-    };
+  return function(...args) {
+    return fn(...args).catch(err => {
+      console.error(err);
+    });
   };
+};
+
+// Pick random int
+export const randomIntFromInterval = (min, max) => { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+

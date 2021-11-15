@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components/macro';
 import Main from '../styles/Main';
+import Playlist from '../styles/Playlist';
+import Loading from '../styles/Loading';
 import theme from '../styles/theme';
 import media from '../styles/media';
 import { getPlaylists, logout } from '../spotify';
@@ -22,7 +24,7 @@ const Brand = styled.header`
     }
     h2 {
         color: ${colors.lightGrey};
-        margin-bottom: 0px;
+        margin-bottom: 25px;
         ${media.phone`
             display: flex;
             justify-content: center;
@@ -73,24 +75,16 @@ export default class Playlists extends Component {
 
   render() {
     const { playlists } = this.state;
-    console.log(playlists);
     return (
       <Main>
             <LogoutButton onClick={logout}>Logout</LogoutButton>
             <Brand>
                 <h1>Spotify Scanner</h1>
-                <h1>{playlists.st}</h1>
                 <h2>Select a playlist</h2>
-
-                <ul>
-                      {playlists ? playlists.data.items.map((playlist, i) => playlist.name) : ''}
-                </ul>
-                
             </Brand>
-            {/* <ul>
-                {playlists ? playlists.items.map((playlist, i) => <h1>{playlist}</h1>) : ''}
-            </ul> */}
-            
+            <ul>
+                    {playlists ? playlists.data.items.map((playlist, i) => <Playlist playlist={playlist} key={i} />) : <Loading />}
+            </ul>
       </Main> 
     )
   }

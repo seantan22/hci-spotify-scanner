@@ -81,3 +81,7 @@ const headers = {
 };
 
 export const getPlaylists = () => axios.get('https://api.spotify.com/v1/me/playlists', { headers });
+
+export const getPlaylist = playlistId  => axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, { headers });
+
+export const getTracksOfPlaylist = playlistId => axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, { headers });
