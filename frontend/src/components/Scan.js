@@ -29,7 +29,7 @@ const Overview = styled.section`
   grid-template-columns: 3fr 5fr;
   grid-gap: 10px;
   width: 100%;
-  ${media.tablet`
+  ${media.phone`
     grid-template-columns: 1fr;
   `};
 `;
@@ -75,6 +75,28 @@ const BackButton = styled(Link)`
   margin-bottom: 10px;
   padding: 6px 15px;
   font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  &:hover,
+  &:focus {
+    background-color: ${colors.white};
+    color: ${colors.black};
+  }
+`;
+
+const ScanButton = styled.div`
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: ${colors.white};
+  border: 1px solid ${colors.white};
+  border-radius: 30px;
+  margin-top: 20px;
+  padding: 50px 15px;
+  font-size: 70px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -152,6 +174,7 @@ export default class NowPlaying extends Component {
                     ) : <Loading /> }
                 </Section>
             </Overview>
+            <ScanButton>Scan</ScanButton>
         </Main>
     )
   }
