@@ -18,7 +18,11 @@ const { colors } = theme;
 const Header = styled.header`
   ${mixins.flexBetween};
   color: ${colors.white};
+  display: block;
   h2 {
+    font-size: 12px;
+    justify-content: center;
+    align-items: flex-end;
     margin: 0;
   }
 `;
@@ -63,6 +67,7 @@ export default class NowPlaying extends Component {
 
   state = {
       playlist: '',
+      trackName: '',
       playlistTracks: '',
   };
 
@@ -72,23 +77,27 @@ export default class NowPlaying extends Component {
 
   async getData() {
     const { playlistId } = this.props;
-    const playlist = await getPlaylist(playlistId);
-    const resp = await getTracksOfPlaylist(playlistId);
-    const playlistTracks = resp.data;
+    const playlistData = await getPlaylist(playlistId);
+    const playlist = playlistData.data;
+    const playlistIdData = await getTracksOfPlaylist(playlistId);
+    const numOfTracks = playlistIdData.data.total;
+    const playlistTracks = playlistIdData.data.items;
+
+    const trackIndex = randomIntFromInterval(0, numOfTracks);
+    const trackData = playlistTracks[trackIndex];
+    const trackName = trackData.track.name;
     
     this.setState({
-        playlist: '',
+        playlist,
+        trackName,
         playlistTracks,
     });
   }
 
   render() {
 
-    const { playlist, playlistTracks } = this.state;
-    console.log(playlistTracks);
+    const { playlist, trackName } = this.state;
 
-    // const trackIndex = randomIntFromInterval(0, playlistTracks.length);
-    
     return (
         <Main>
             <BackButton to={`/`}>Back</BackButton>
@@ -96,8 +105,8 @@ export default class NowPlaying extends Component {
                 <Section>
                     <Header>
                         <h2>{playlist.name}</h2>
-                        {playlistTracks ? playlistTracks.items.map((track, i) => <h1 key={i}>{track.track.name}</h1>) : ''}
                     </Header>
+                    <h2>{trackName}</h2>
                     {/* {playingNow ? (
                         <Container>
                             <Artwork>
