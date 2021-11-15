@@ -1,0 +1,32 @@
+{
+  "name": "hci-spotify-scanner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "backend": "node backend/index.js",
+    "frontend": "cd frontend; npm start",
+    "dev": "concurrently -k \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seantan22/hci-spotify-scanner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seantan22/hci-spotify-scanner/issues"
+  },
+  "homepage": "https://github.com/seantan22/hci-spotify-scanner#readme",
+  "dependencies": {
+    "concurrently": "^6.4.0",
+    "connect-history-api-fallback": "^1.6.0",
+    "cookie-parse": "^0.4.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "request": "^2.88.2"
+  }
+}
