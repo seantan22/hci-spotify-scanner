@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/seantan22/hci-spotify-scanner#readme",
   "dependencies": {
+    "concurrently": "^6.4.0",
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parse": "^0.4.0",
     "cookie-parser": "^1.4.5",
