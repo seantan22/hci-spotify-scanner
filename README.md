@@ -3,13 +3,4 @@
 
 
 
-Backend:
-`npm start`
-
-http://localhost:8085
-
-Frontend:
-`cd frontend`
-`npm start`
-
-http://localhost:3000
+Run Frontend and Backend: `npm run dev`
