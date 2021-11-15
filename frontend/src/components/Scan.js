@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from '@reach/router';
 import PropTypes from 'prop-types';
-
-// import { getUserInfo, getAudioFeaturesOfTrack, getRecommendationsBpm, getAudioFeaturesOfTracksRecs } from '../spotify';
 import { catchErrors } from '../utils';
-
 import styled from 'styled-components/macro';
 import Main from '../styles/Main';
-// import Loading from './Loading';
+import Loading from '../styles/Loading';
 import theme from '../styles/theme';
 import mixins from '../styles/mixins';
 import media from '../styles/media';
@@ -37,8 +34,37 @@ const Overview = styled.section`
   `};
 `;
 
+const Container = styled.div`
+    text-align: center !important;
+    align-items: center;
+    margin-top: 10px;
+`;
+
 const Section = styled.div`
   margin: 0px;
+`;
+
+const SongName = styled.h1`
+  font-size: 20px;
+  margin: 0 0 5px;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const ArtistName = styled.h2`
+font-size: 14px;
+  color: ${colors.lightestGrey};
+  font-weight: 700;
+`;
+
+const Artwork = styled.div`
+  ${mixins.coverShadow};
+  max-width: 200px;
+  margin-top: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const BackButton = styled(Link)`
@@ -67,8 +93,7 @@ export default class NowPlaying extends Component {
 
   state = {
       playlist: '',
-      trackName: '',
-      playlistTracks: '',
+      track: '',
   };
 
   componentDidMount() {
@@ -85,18 +110,17 @@ export default class NowPlaying extends Component {
 
     const trackIndex = randomIntFromInterval(0, numOfTracks);
     const trackData = playlistTracks[trackIndex];
-    const trackName = trackData.track.name;
-    
+    const track = trackData.track;
+
     this.setState({
         playlist,
-        trackName,
-        playlistTracks,
+        track,
     });
   }
 
   render() {
 
-    const { playlist, trackName } = this.state;
+    const { playlist, track } = this.state;
 
     return (
         <Main>
@@ -106,35 +130,26 @@ export default class NowPlaying extends Component {
                     <Header>
                         <h2>{playlist.name}</h2>
                     </Header>
-                    <h2>{trackName}</h2>
-                    {/* {playingNow ? (
+                    {track ? (
                         <Container>
                             <Artwork>
-                                <img src={playingNow.item.album.images[0].url} alt="Album Artwork"/> 
+                                <img src={track.album.images[0].url} alt="Album Artwork"/> 
                             </Artwork>
                             <br/>
                             <br/>
-                            <TitleLink to={`/track/${playingNow.item.id}`}>
-                              <Title>{playingNow.item.name}</Title> 
-                            </TitleLink>
+                            <SongName>{track.name}</SongName> 
                             <ArtistName>
-                                {playingNow.item.artists &&
-                                    playingNow.item.artists.map(({ name }, i) => (
+                                {track.artists &&
+                                    track.artists.map(({ name }, i) => (
                                     <span key={i}>
                                         {name}
-                                        {playingNow.item.artists.length > 0 && i === playingNow.item.artists.length - 1 ? '' : ','}
+                                        {track.artists.length > 0 && i === track.artists.length - 1 ? '' : ','}
                                         &nbsp;
                                     </span>
                                 ))}
                             </ArtistName>
-                            <AlbumLink to={`/album/${playingNow.item.album.id}`}>
-                              <Album> 
-                                {playingNow.item.album.name}{' '}&middot; {getYear(playingNow.item.album.release_date)}
-                              </Album>
-                            </AlbumLink>
-                            <BPM>{playingNowBPM} BPM</BPM> 
                         </Container>
-                    ) : <Loading /> } */}
+                    ) : <Loading /> }
                 </Section>
             </Overview>
         </Main>
