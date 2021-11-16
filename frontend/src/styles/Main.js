@@ -20,7 +20,7 @@ const Main = styled.main`
     ${media.tablet`
       text-align: center;
     `};
-  }
+  }c
 `;
 
 export default Main;

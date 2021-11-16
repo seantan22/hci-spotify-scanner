@@ -8,7 +8,7 @@ import Loading from '../styles/Loading';
 import theme from '../styles/theme';
 import mixins from '../styles/mixins';
 import media from '../styles/media';
-import { getPlaylist, getTracksOfPlaylist } from '../spotify';
+import { getPlaylist, getTracksOfPlaylist, playTrack } from '../spotify';
 import { randomIntFromInterval } from '../utils';
 const { colors } = theme;
 
@@ -86,96 +86,127 @@ const BackButton = styled(Link)`
   }
 `;
 
-const ScanButton = styled.div`
-  background-color: transparent;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: ${colors.white};
-  border: 1px solid ${colors.white};
-  border-radius: 30px;
-  margin-top: 20px;
-  padding: 50px 15px;
-  font-size: 70px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  text-align: center;
-  &:hover,
-  &:focus {
-    background-color: ${colors.white};
+const ScanButtonInactive = styled.div`
+    display: block;
     color: ${colors.black};
-  }
+    background-color: transparent;
+    text-align: center;
+    height: 200px;
+    line-height: 200px;
+    color: ${colors.white};
+    border: 5px solid ${colors.white};
+    border-radius: 30px;
+    margin-top: 20px;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 `;
 
-export default class NowPlaying extends Component {
-  static propTypes = {
-      playlistId: PropTypes.string,
-  }
+const ScanButtonActive = styled.div`
+    display: block;
+    background-color: ${colors.white};
+    text-align: center;
+    height: 200px;
+    line-height: 200px;
+    color: ${colors.black};
+    border: 5px solid ${colors.white};
+    border-radius: 30px;
+    margin-top: 20px;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+`;
 
-  state = {
-      playlist: '',
-      track: '',
-  };
+export default class Scan extends Component {
 
-  componentDidMount() {
-    catchErrors(this.getData());
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            scanInactive: true,
+            playlist: '',
+            track: '',
+        };
 
-  async getData() {
-    const { playlistId } = this.props;
-    const playlistData = await getPlaylist(playlistId);
-    const playlist = playlistData.data;
-    const playlistIdData = await getTracksOfPlaylist(playlistId);
-    const numOfTracks = playlistIdData.data.total;
-    const playlistTracks = playlistIdData.data.items;
+        this.toggleScan = this.toggleScan.bind(this);
+    }
 
-    const trackIndex = randomIntFromInterval(0, numOfTracks);
-    const trackData = playlistTracks[trackIndex];
-    const track = trackData.track;
+    static propTypes = {
+        playlistId: PropTypes.string,
+    }
 
-    this.setState({
-        playlist,
-        track,
-    });
-  }
+    toggleScan() {
+        this.setState({scanInactive: !this.state.scanInactive});
+        // while(!this.state.scanInactive) {
+        //     console.log("scanning...");
+        // }
+    }
 
-  render() {
+    componentDidMount() {
+        catchErrors(this.getData());
+    }
 
-    const { playlist, track } = this.state;
+    async getData() {
+        const { playlistId } = this.props;
+        const playlistData = await getPlaylist(playlistId);
+        const playlistIdData = await getTracksOfPlaylist(playlistId);
 
-    return (
-        <Main>
-            <BackButton to={`/`}>Back</BackButton>
-            <Overview>
-                <Section>
-                    <Header>
-                        <h2>{playlist.name}</h2>
-                    </Header>
-                    {track ? (
-                        <Container>
-                            <Artwork>
-                                <img src={track.album.images[0].url} alt="Album Artwork"/> 
-                            </Artwork>
-                            <br/>
-                            <br/>
-                            <SongName>{track.name}</SongName> 
-                            <ArtistName>
-                                {track.artists &&
-                                    track.artists.map(({ name }, i) => (
-                                    <span key={i}>
-                                        {name}
-                                        {track.artists.length > 0 && i === track.artists.length - 1 ? '' : ','}
-                                        &nbsp;
-                                    </span>
-                                ))}
-                            </ArtistName>
-                        </Container>
-                    ) : <Loading /> }
-                </Section>
-            </Overview>
-            <ScanButton>Scan</ScanButton>
-        </Main>
-    )
-  }
+        const playlist = playlistData.data;
+        const numOfTracks = playlistIdData.data.total;
+        const playlistTracks = playlistIdData.data.items;
+
+        const trackIndex = randomIntFromInterval(0, numOfTracks);
+        const trackData = playlistTracks[trackIndex];
+        const track = trackData.track;
+        await playTrack(track.album.uri, track.track_number);
+
+        this.setState({
+            playlist,
+            track,
+        });
+    }
+
+    render() {
+
+        const { playlist, track } = this.state;
+
+        return (
+            <Main>
+                <BackButton to={`/`}>Back</BackButton>
+                <Overview>
+                    <Section>
+                        <Header>
+                            <h2>{playlist.name}</h2>
+                        </Header>
+                        {track ? (
+                            <Container>
+                                <Artwork>
+                                    <img src={track.album.images[0].url} alt="Album Artwork"/> 
+                                </Artwork>
+                                <br/>
+                                <br/>
+                                <SongName>{track.name}</SongName> 
+                                <ArtistName>
+                                    {track.artists &&
+                                        track.artists.map(({ name }, i) => (
+                                        <span key={i}>
+                                            {name}
+                                            {track.artists.length > 0 && i === track.artists.length - 1 ? '' : ','}
+                                            &nbsp;
+                                        </span>
+                                    ))}
+                                </ArtistName>
+                            </Container>
+                        ) : <Loading /> }
+                    </Section>
+                </Overview>
+                {this.state.scanInactive ? <ScanButtonInactive onClick={this.toggleScan}>Click to Scan</ScanButtonInactive> 
+                                        : <ScanButtonActive onClick={this.toggleScan}>Scanning</ScanButtonActive>}
+            </Main>
+        )
+    }
 }
+
+
+
