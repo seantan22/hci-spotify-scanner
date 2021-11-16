@@ -153,6 +153,7 @@ export default class Scan extends Component {
                     if (track != null) {
                         this.setState({track});
                         await playTrack(track.album.uri, track.track_number);
+                        this.setState({track});
                     } 
                     await sleep(5000);  
                 } 
