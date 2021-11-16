@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from '@reach/router';
 import PropTypes from 'prop-types';
-import { catchErrors } from '../utils';
+import { catchErrors, sleep } from '../utils';
 import styled from 'styled-components/macro';
 import Main from '../styles/Main';
 import Loading from '../styles/Loading';
@@ -126,25 +126,51 @@ export default class Scan extends Component {
         this.state = {
             scanInactive: true,
             playlist: '',
+            playlistTracks: '',
+            numOfTracks: '',
             track: '',
         };
 
-        this.toggleScan = this.toggleScan.bind(this);
+        this.startScan = this.startScan.bind(this);
+        this.stopScan = this.stopScan.bind(this);
     }
 
     static propTypes = {
         playlistId: PropTypes.string,
     }
 
-    toggleScan() {
-        this.setState({scanInactive: !this.state.scanInactive});
-        // while(!this.state.scanInactive) {
-        //     console.log("scanning...");
-        // }
+    async startScan() {
+        this.setState(
+            {scanInactive: false},
+            async () => {
+                while (true) {
+                    if (this.state.scanInactive === true) {
+                        break;
+                    }
+                    const trackIndex = randomIntFromInterval(0, this.state.numOfTracks);
+                    const trackData = this.state.playlistTracks[trackIndex];
+                    const track = trackData.track;
+                    if (track != null) {
+                        await playTrack(track.album.uri, track.track_number);
+                    } 
+                    await sleep(5000);  
+                } 
+        })
+    }
+
+    async stopScan() {
+        this.setState({scanInactive: true})
     }
 
     componentDidMount() {
         catchErrors(this.getData());
+    }
+
+    async playRandomTrack(playlistTracks, numOfTracks) {
+        const trackIndex = randomIntFromInterval(0, numOfTracks);
+        const trackData = playlistTracks[trackIndex];
+        const track = trackData.track;
+        await playTrack(track.album.uri, track.track_number);
     }
 
     async getData() {
@@ -159,10 +185,14 @@ export default class Scan extends Component {
         const trackIndex = randomIntFromInterval(0, numOfTracks);
         const trackData = playlistTracks[trackIndex];
         const track = trackData.track;
-        await playTrack(track.album.uri, track.track_number);
+        if (track != null) {
+            await playTrack(track.album.uri, track.track_number);
+        }
 
         this.setState({
             playlist,
+            playlistTracks,
+            numOfTracks, 
             track,
         });
     }
@@ -201,8 +231,8 @@ export default class Scan extends Component {
                         ) : <Loading /> }
                     </Section>
                 </Overview>
-                {this.state.scanInactive ? <ScanButtonInactive onClick={this.toggleScan}>Click to Scan</ScanButtonInactive> 
-                                        : <ScanButtonActive onClick={this.toggleScan}>Scanning</ScanButtonActive>}
+                {this.state.scanInactive ? <ScanButtonInactive onClick={this.startScan}>Click to Scan</ScanButtonInactive> 
+                                        : <ScanButtonActive onClick={this.stopScan}>Scanning</ScanButtonActive>}
             </Main>
         )
     }
