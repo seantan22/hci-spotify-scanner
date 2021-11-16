@@ -152,18 +152,14 @@ export default class Scan extends Component {
                     const track = trackData.track;
                     if (track != null) {
                         await playTrack(track.album.uri, track.track_number);
-                        this.setState({track});
                     } 
                     await sleep(5000);  
                 } 
-        }) 
+        })
     }
 
     async stopScan() {
-        this.setState({scanInactive: true},
-            () => {
-                console.log('stop scanning.');
-        });
+        this.setState({scanInactive: true})
     }
 
     componentDidMount() {
