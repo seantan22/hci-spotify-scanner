@@ -9,7 +9,7 @@ const { colors } = theme;
 const LOGIN_URI =
   process.env.NODE_ENV !== 'production'
     ? 'http://localhost:8888/login'
-    : 'https://hci-spotify-scanner-app.herokuapp.com//login';
+    : 'https://hci-spotify-scanner-app.herokuapp.com/login';
 
 
 const Login = styled(Main)`
