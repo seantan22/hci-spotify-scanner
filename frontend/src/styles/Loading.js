@@ -7,7 +7,7 @@ const { colors } = theme;
 const Container = styled.div`
   ${mixins.flexCenter};
   width: 100%;
-  height: 60vh;
+  height: 336px;
 `;
 const dance = keyframes`
   from {
