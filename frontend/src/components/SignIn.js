@@ -11,6 +11,7 @@ const LOGIN_URI =
     ? 'http://localhost:8888/login'
     : 'https://hci-spotify-scanner-app.herokuapp.com//login';
 
+//changed login link
 
 const Login = styled(Main)`
   ${mixins.flexCenter};
