@@ -85,13 +85,3 @@ export const getPlaylists = () => axios.get('https://api.spotify.com/v1/me/playl
 export const getPlaylist = playlistId  => axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, { headers });
 
 export const getTracksOfPlaylist = playlistId => axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, { headers });
-
-export const playTrack = (albumURI, trackNumber) => {
-    const data = {
-        "context_uri": albumURI,
-        "offset": {
-            "position": parseInt(trackNumber-1),
-        },
-    };
-    return axios.put('https://api.spotify.com/v1/me/player/play', data, { headers: headers });
-}

@@ -11,7 +11,9 @@ const TrackContainer = styled(Link)`
   grid-template-columns: auto 1fr;
   align-items: center;
   margin-bottom: ${spacing.sm};
-  border: 2px solid ${colors.white};
+  border-style: solid;
+  border-color: white;
+  border-width: 2px;
   border-radius: 10px;
   padding: 5px;
   &:hover,
