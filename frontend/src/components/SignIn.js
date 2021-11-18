@@ -9,7 +9,7 @@ const { colors } = theme;
 const LOGIN_URI =
   process.env.NODE_ENV !== 'production'
     ? 'http://localhost:8888/login'
-    : 'https://beat-switch.herokuapp.com/login';
+    : 'https://hci-spotify-scanner.herokuapp.com//login';
 
 
 const Login = styled(Main)`
