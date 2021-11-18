@@ -7,7 +7,7 @@
     "backend": "node backend/index.js",
     "frontend": "cd frontend; npm start",
     "start": "concurrently -k \"npm run backend\" \"npm run frontend\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=true && npm install --prefix frontend && npm run build --prefix frontend"
 
   },
   "repository": {
