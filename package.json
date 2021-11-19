@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node backend/index.js",
+    "heroku-postbuild": "cd frontend && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "frontend": "cd frontend && npm start",
     "backend": "node backend/index.js",
-    "frontend": "cd frontend; npm start",
-    "start": "npm install; concurrently -k \"npm run backend\" \"npm run frontend\""
+    "dev": "concurrently --kill-others-on-fail \"yarn backend\" \"yarn frontend\""
   },
   "repository": {
     "type": "git",
