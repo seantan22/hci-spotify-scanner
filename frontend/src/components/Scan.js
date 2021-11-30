@@ -113,7 +113,7 @@ const ScanButtonActive = styled.div`
     border: 5px solid ${colors.white};
     border-radius: 30px;
     margin-top: 20px;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -155,7 +155,7 @@ export default class Scan extends Component {
                         await playTrack(track.album.uri, track.track_number);
                         this.setState({track});
                     } 
-                    await sleep(5000);  
+                    await sleep(8000);  
                 } 
         })
     }
@@ -234,7 +234,7 @@ export default class Scan extends Component {
                     </Section>
                 </Overview>
                 {this.state.scanInactive ? <ScanButtonInactive onClick={this.startScan}>Click to Scan</ScanButtonInactive> 
-                                        : <ScanButtonActive onClick={this.stopScan}>Scanning</ScanButtonActive>}
+                                        : <ScanButtonActive onClick={this.stopScan}>Click to Stop Scanning</ScanButtonActive>}
             </Main>
         )
     }

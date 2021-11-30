@@ -31,6 +31,27 @@ const Brand = styled.header`
             font-size: 14px;
         `};
     }
+    h4 {
+        color: ${colors.lightGrey};
+        margin-top: 150px;
+        margin-bottom: 25px;
+        ${media.phone`
+            display: flex;
+            justify-content: center;
+            font-size: 20px;
+        `};
+    }
+    h6 {
+        color: ${colors.lightGrey};
+        margin-top: 180px;
+        margin-bottom: 10px;
+        text-align: center;
+        ${media.phone`
+            display: flex;
+            justify-content: center;
+            font-size: 14px;
+        `};
+    }
     
 `;
 
@@ -83,7 +104,12 @@ export default class Playlists extends Component {
                 <h2>Select a playlist</h2>
             </Brand>
             <ul>
-                    {playlists ? playlists.data.items.map((playlist, i) => <Playlist playlist={playlist} key={i} />) : <Loading />}
+                    {playlists ? playlists.data.items.map((playlist, i) => <Playlist playlist={playlist} key={i} />) : 
+                    <Brand>
+                        <h4> Searching for a connected device... </h4>
+                        <h6> Please make sure you are logged into the same Spotify account on another device and that there is a song playing on that device. </h6>
+                    </Brand>
+                    }
             </ul>
       </Main> 
     )
